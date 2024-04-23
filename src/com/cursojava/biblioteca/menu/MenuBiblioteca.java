@@ -13,7 +13,7 @@ public class MenuBiblioteca {
 	public static final Integer opSalir = 7;
 
 	public static Integer mostrarMenu(Scanner scan) {
-		System.out.println("1 - Seleccionar documento por titulo.");
+		System.out.println("1 - Seleccionar documento por titulo. 1231");
 		System.out.println("2 - Seleccionar documento por codigo.");
 		System.out.println("3 - Prestar documento.");
 		System.out.println("4 - Devolver documento.");
