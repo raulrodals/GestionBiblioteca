@@ -8,7 +8,7 @@ public class ConexionMysql {
 
 	private static final String BASE = "jdbc:mysql://";
 	private static final String USER = "root";
-	private static final String PASS = "abc123.";
+	private static final String PASS = "root";
 	private static final String SERVIDOR = "localhost";
 	private static final String ESQUEMA_BBDD = "biblioteca2";
 	private static final String PUERTO = "3306";

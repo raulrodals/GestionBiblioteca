@@ -20,6 +20,7 @@ import com.cursojava.biblioteca.documentos.Revista;
 import com.cursojava.biblioteca.mysql.GestionBBDD;
 import com.cursojava.biblioteca.prestamos.Prestamo;
 import com.cursojava.biblioteca.usuarios.Persona;
+import com.cursojava.biblioteca.usuarios.Usuario;
 import com.cursojava.biblioteca.utilidad.BibliotecaEnums.TipoDocumento;
 import com.cursojava.biblioteca.utilidad.BibliotecaEnums.TipoUsuario;
 
@@ -42,25 +43,21 @@ public class MenuBiblioteca2 {
 		return opcion;
 	}
 
-	public static void menu(Connection conn, Biblioteca biblioteca, Scanner scan) {
+	public static void menu(Connection conn, Biblioteca biblioteca, Scanner scan) throws SQLException {
 		Integer seleccionada = -1;
 		do {
 			seleccionada = mostrarMenu(scan);
 			switch (seleccionada) {
 			case 1: {
-				try {
-					seleccionarDocumentoPorTitulo(conn, biblioteca, scan);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				seleccionarDocumentoPorTitulo(conn, biblioteca, scan);
 				break;
 			}
 			case 2: {
-				selecciondarDocumentoPorCod(biblioteca, scan);
+				prestarDocumentoSeleccionado(conn, biblioteca, scan);
 				break;
 			}
 			case 3: {
-				prestarDocumento(biblioteca, scan);
+				prestarDocumentoSeleccionado(conn, biblioteca, scan);
 				break;
 			}
 			case 4: {
@@ -76,6 +73,7 @@ public class MenuBiblioteca2 {
 				break;
 			}
 			case 7: {
+
 				break;
 			}
 			case 8:
@@ -96,20 +94,25 @@ public class MenuBiblioteca2 {
 			throws SQLException {
 		List<Documento> documentosFiltrados = GestionBBDD.getDocumentosFiltrados(conn, scan);
 		Documento documento = null;
-		if(documentosFiltrados.size() >= 1) {
+		if (documentosFiltrados.size() >= 1) {
 			Integer seleccionado = 1;
-			if(documentosFiltrados.size() > 1) {
+			if (documentosFiltrados.size() > 1) {
 				System.out.println("Documentos encontrados : ");
 				for (int i = 0; i < documentosFiltrados.size(); i++) {
-					System.out.println((i+1) + " - " + documentosFiltrados.get(i));
+					System.out.println((i + 1) + " - " + documentosFiltrados.get(i));
 				}
 				String frase = "Seleccionar un documento de la lista del 1 al " + documentosFiltrados.size();
 				seleccionado = GestionNumeros.scanNumero(frase, scan);
 			}
-			documento = documentosFiltrados.get(seleccionado -1);
+			documento = documentosFiltrados.get(seleccionado - 1);
 			biblioteca.setDocumentoSeleccionado(documento);
 			System.out.println("Documento selecciondo: " + documento);
 		}
+	}
+
+	public static void prestarDocumentoSeleccionado(Connection conn, Biblioteca biblioteca, Scanner scan)
+			throws SQLException {
+		GestionBBDD.prestaDocumento(conn, scan, biblioteca.getDocumentoSeleccionado());
 	}
 
 	public static void selecciondarDocumentoPorCod(Biblioteca biblioteca, Scanner scan) {
@@ -124,14 +127,13 @@ public class MenuBiblioteca2 {
 		biblioteca.getBibliotecario().prestaDocumentoActual(dni);
 		Documento seleccionado = biblioteca.getDocumentoSeleccionado();
 
-		//comprobar dni y buscar usuario, if(usuario != null) agregamos prestamo a la biblioteca
+		// comprobar dni y buscar usuario, if(usuario != null) agregamos prestamo a la
+		// biblioteca
 		/*
-		Prestamo prestamo = new Prestamo();
-		prestamo.setDocumento(seleccionado);
-		prestamo.setUsuarioPrestamo(usuario);
-		// Insertar prestamo en BBDD
-		biblioteca.agregarPrestamo(usuario, prestamo);
-		*/
+		 * Prestamo prestamo = new Prestamo(); prestamo.setDocumento(seleccionado);
+		 * prestamo.setUsuarioPrestamo(usuario); // Insertar prestamo en BBDD
+		 * biblioteca.agregarPrestamo(usuario, prestamo);
+		 */
 		System.out.println(String.format("Se ha prestado el documento: %s al usuario con dni: %s", seleccionado, dni));
 	}
 
