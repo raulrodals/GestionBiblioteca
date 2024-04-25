@@ -38,7 +38,7 @@ public class MenuBiblioteca2 {
 		System.out.println("7 - Agregar Libro.");
 		System.out.println("8 - Agregar Revista.");
 		System.out.println("9 - Mostrar todos los prestamos.");
-		System.out.println("10 - Salir.");
+		System.out.println("11 - Salir.");
 		Integer opcion = GestionNumeros.scanNumero("Introduce un numero entre 1 y " + opSalir, scan);
 		return opcion;
 	}
